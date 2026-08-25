@@ -157,11 +157,17 @@ This project is built incrementally. See [docs/development-phases.md](docs/devel
 
 ## Deployment
 
-Deployment configuration will be added in Phase 10. The application is designed for:
+**Live demo (frontend):** https://danieldemoz.github.io/ai-governance-assessment/
 
-- Backend: any Python-compatible host (Railway, Render, AWS, Azure)
-- Frontend: Vercel, Netlify, or static export
-- Database: PostgreSQL recommended for production
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/DanielDemoz/ai-governance-assessment)
+
+The frontend deploys automatically via GitHub Actions. The backend API requires a one-time Render deploy (button above). See [docs/deploy.md](docs/deploy.md) for full instructions.
+
+| Component | Platform |
+|-----------|----------|
+| Frontend | GitHub Pages (static Next.js export) |
+| Backend API | Render (Docker: FastAPI + SQLite) |
+| Monolith fallback | Same Render service also serves the full app at `https://ai-governance-assessment.onrender.com` |
 
 ## Privacy Notice
 
