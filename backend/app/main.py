@@ -4,6 +4,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app import __version__
 from app.api import api_router
@@ -49,3 +50,8 @@ def on_startup() -> None:
 @app.get("/health")
 def health_check() -> dict[str, str]:
     return {"status": "ok", "version": __version__}
+
+
+static_root = Path(settings.static_dir) if settings.static_dir else None
+if static_root and static_root.is_dir():
+    app.mount("/", StaticFiles(directory=static_root, html=True), name="frontend")

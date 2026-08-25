@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ai-governance-assessment
+    runtime: docker
+    plan: free
+    region: ohio
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        value: sqlite:///./data/assessments.db
+      - key: STATIC_DIR
+        value: ./static
+      - key: CORS_ORIGINS
+        value: https://danieldemoz.github.io,http://localhost:3000
