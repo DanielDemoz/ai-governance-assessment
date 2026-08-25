@@ -1,0 +1,21 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  --color-primary: #1e3a5f;
+  --color-primary-light: #2d5a87;
+  --color-accent: #c4a35a;
+  --color-surface: #f8f9fa;
+  --color-text: #1a1a2e;
+  --color-muted: #6b7280;
+  --color-risk-low: #059669;
+  --color-risk-moderate: #d97706;
+  --color-risk-high: #dc2626;
+  --color-risk-critical: #7f1d1d;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
