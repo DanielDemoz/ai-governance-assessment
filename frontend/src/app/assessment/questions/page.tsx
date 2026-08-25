@@ -1,16 +1,17 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/Button";
 import { AssessmentShell } from "@/components/Layout";
 import { ProgressBar } from "@/components/ProgressBar";
 import { ResponseScale } from "@/components/ResponseScale";
 import { getAssessment, getCategories, updateResponses } from "@/lib/api";
+import { useAssessmentId } from "@/lib/use-assessment-id";
 import type { Category, ResponseItem } from "@/types/assessment";
 
-export default function QuestionsPage() {
-  const params = useParams<{ id: string }>();
+function QuestionsPageContent() {
+  const assessmentId = useAssessmentId();
   const router = useRouter();
   const [categories, setCategories] = useState<Category[]>([]);
   const [responses, setResponses] = useState<Record<number, number>>({});
@@ -27,7 +28,13 @@ export default function QuestionsPage() {
   const answeredCount = useMemo(() => Object.keys(responses).length, [responses]);
 
   useEffect(() => {
-    Promise.all([getCategories(), getAssessment(params.id)])
+    if (!assessmentId) {
+      setError("Missing assessment ID.");
+      setLoading(false);
+      return;
+    }
+
+    Promise.all([getCategories(), getAssessment(assessmentId)])
       .then(([cats, assessment]) => {
         setCategories(cats);
         const existing: Record<number, number> = {};
@@ -38,7 +45,7 @@ export default function QuestionsPage() {
       })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [params.id]);
+  }, [assessmentId]);
 
   const currentCategory = categories[categoryIndex];
 
@@ -55,6 +62,8 @@ export default function QuestionsPage() {
   );
 
   const saveAndContinue = async () => {
+    if (!assessmentId) return;
+
     if (!currentCategoryComplete) {
       setError("Please answer all questions in this category before continuing.");
       return;
@@ -78,8 +87,8 @@ export default function QuestionsPage() {
         question_id: Number(questionId),
         response_value: value,
       }));
-      await updateResponses(params.id, payload);
-      router.push(`/assessment/${params.id}/results`);
+      await updateResponses(assessmentId, payload);
+      router.push(`/assessment/results?id=${assessmentId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save responses");
     } finally {
@@ -98,7 +107,7 @@ export default function QuestionsPage() {
   if (!currentCategory) {
     return (
       <AssessmentShell title="Governance Questionnaire">
-        <p className="text-red-600">No questions available.</p>
+        <p className="text-red-600">{error ?? "No questions available."}</p>
       </AssessmentShell>
     );
   }
@@ -109,11 +118,7 @@ export default function QuestionsPage() {
       subtitle="Rate each governance control using the maturity scale. Select Not applicable where a question does not apply."
     >
       <div className="mb-8 space-y-4">
-        <ProgressBar
-          current={answeredCount}
-          total={totalQuestions}
-          label="Questions answered"
-        />
+        <ProgressBar current={answeredCount} total={totalQuestions} label="Questions answered" />
         <p className="text-sm text-slate-600">
           Category {categoryIndex + 1} of {categories.length}:{" "}
           <span className="font-medium text-[var(--color-primary)]">{currentCategory.name}</span>{" "}
@@ -169,5 +174,19 @@ export default function QuestionsPage() {
         </Button>
       </div>
     </AssessmentShell>
+  );
+}
+
+export default function QuestionsPage() {
+  return (
+    <Suspense
+      fallback={
+        <AssessmentShell title="Governance Questionnaire" subtitle="Loading questions…">
+          <p className="text-slate-600">Loading…</p>
+        </AssessmentShell>
+      }
+    >
+      <QuestionsPageContent />
+    </Suspense>
   );
 }

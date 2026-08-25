@@ -1,11 +1,12 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/Button";
 import { AssessmentShell } from "@/components/Layout";
 import { checkboxClassName, FormField, inputClassName, selectClassName } from "@/components/FormField";
 import { getAssessment, updateProfile } from "@/lib/api";
+import { useAssessmentId } from "@/lib/use-assessment-id";
 import type { AISystemProfile, OrganizationProfile } from "@/types/assessment";
 
 const ORG_TYPES = [
@@ -42,8 +43,8 @@ const IMPACT_FLAGS: { key: keyof AISystemProfile; label: string }[] = [
   { key: "affects_legal_rights", label: "Legal rights or opportunities" },
 ];
 
-export default function ProfilePage() {
-  const params = useParams<{ id: string }>();
+function ProfilePageContent() {
+  const assessmentId = useAssessmentId();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -69,22 +70,30 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    getAssessment(params.id)
+    if (!assessmentId) {
+      setError("Missing assessment ID.");
+      setLoading(false);
+      return;
+    }
+
+    getAssessment(assessmentId)
       .then((assessment) => {
         if (assessment.organization) setOrganization(assessment.organization);
         if (assessment.ai_system) setAiSystem(assessment.ai_system);
       })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [params.id]);
+  }, [assessmentId]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    if (!assessmentId) return;
+
     setSaving(true);
     setError(null);
     try {
-      await updateProfile(params.id, organization, aiSystem);
-      router.push(`/assessment/${params.id}/questions`);
+      await updateProfile(assessmentId, organization, aiSystem);
+      router.push(`/assessment/questions?id=${assessmentId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save profile");
     } finally {
@@ -261,5 +270,19 @@ export default function ProfilePage() {
         </div>
       </form>
     </AssessmentShell>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense
+      fallback={
+        <AssessmentShell title="Organization & AI System Profile" subtitle="Loading…">
+          <p className="text-slate-600">Loading profile…</p>
+        </AssessmentShell>
+      }
+    >
+      <ProfilePageContent />
+    </Suspense>
   );
 }

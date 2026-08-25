@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { ResultsDashboard } from "@/components/dashboard/ResultsDashboard";
 import { AssessmentShell } from "@/components/Layout";
 import {
@@ -11,6 +10,7 @@ import {
   getRiskMatrix,
   getRoadmap,
 } from "@/lib/api";
+import { useAssessmentId } from "@/lib/use-assessment-id";
 import type {
   Assessment,
   AssessmentResult,
@@ -19,8 +19,8 @@ import type {
   RoadmapPhase,
 } from "@/types/assessment";
 
-export default function ResultsPage() {
-  const params = useParams<{ id: string }>();
+function ResultsPageContent() {
+  const assessmentId = useAssessmentId();
   const [assessment, setAssessment] = useState<Assessment | null>(null);
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
@@ -30,23 +30,27 @@ export default function ResultsPage() {
   const [error, setError] = useState<string | null>(null);
 
   const loadResults = useCallback(async () => {
-    const data = await getAssessment(params.id);
+    if (!assessmentId) {
+      throw new Error("Missing assessment ID.");
+    }
+
+    const data = await getAssessment(assessmentId);
     setAssessment(data);
     if (data.result) {
       setResult(data.result);
     } else {
-      const calculated = await calculateAssessment(params.id);
+      const calculated = await calculateAssessment(assessmentId);
       setResult(calculated);
     }
     const [recData, roadmapData, matrixData] = await Promise.all([
-      getRecommendations(params.id),
-      getRoadmap(params.id),
-      getRiskMatrix(params.id),
+      getRecommendations(assessmentId),
+      getRoadmap(assessmentId),
+      getRiskMatrix(assessmentId),
     ]);
     setRecommendations(recData.recommendations);
     setRoadmapPhases(roadmapData.phases);
     setRiskMatrix(matrixData);
-  }, [params.id]);
+  }, [assessmentId]);
 
   useEffect(() => {
     loadResults()
@@ -62,7 +66,7 @@ export default function ResultsPage() {
     );
   }
 
-  if (error || !result || !assessment) {
+  if (error || !result || !assessment || !assessmentId) {
     return (
       <AssessmentShell title="Assessment Results" wide>
         <p className="text-red-600" role="alert">
@@ -81,9 +85,23 @@ export default function ResultsPage() {
         roadmapPhases={roadmapPhases}
         riskMatrix={riskMatrix}
         onRiskMatrixUpdate={() => {
-          getRiskMatrix(params.id).then(setRiskMatrix).catch(() => undefined);
+          getRiskMatrix(assessmentId).then(setRiskMatrix).catch(() => undefined);
         }}
       />
     </AssessmentShell>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <AssessmentShell title="Assessment Results" subtitle="Preparing your assessment report." wide>
+          <p className="text-slate-600">Calculating scores and risk profile.</p>
+        </AssessmentShell>
+      }
+    >
+      <ResultsPageContent />
+    </Suspense>
   );
 }
