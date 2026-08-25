@@ -1,0 +1,53 @@
+---
+description: Master instruction — phased development for AI Governance Readiness Assessment
+alwaysApply: true
+---
+
+# AI Governance Readiness Assessment — Development Rules
+
+Build this as a **professional AI governance product**, not a student demo or portfolio mockup.
+
+## Phased Development (CRITICAL)
+
+Work in phases. **Do not build the entire application at once.**
+
+Current phase is documented in `docs/development-phases.md`. After completing a phase, **STOP and verify** before proceeding.
+
+| Phase | Scope |
+|-------|-------|
+| 1 | Architecture, structure, database schema, README |
+| 2 | Questionnaire and scoring engine |
+| 3 | Results dashboard |
+| 4 | Recommendation engine |
+| 5 | Risk matrix and AI system risk |
+| 6 | PDF reporting |
+| 7 | Optional LLM (narratives only) |
+| 8 | Accessibility, UX, security |
+| 9 | Demo assessment |
+| 10 | Production docs and deployment |
+
+## Non-Negotiable Principles
+
+1. **Never use an LLM for numerical scores** — scoring is deterministic only.
+2. **Never claim compliance, safety, or legal approval** — use "indicative readiness", "governance gap", "potential risk".
+3. **Keep scoring logic independent from UI** — lives in `backend/app/services/scoring/`.
+4. **Every score must be explainable** — trace back to individual responses.
+5. **Clearly label AI-generated content** if LLM is used (Phase 7+).
+6. **Do not hard-code assessment results** in frontend components.
+7. **Do not rewrite working components** unnecessarily — inspect before changing.
+
+## Code Standards
+
+- Python: type hints, Pydantic models, pytest for scoring/recommendation tests.
+- TypeScript: strict mode, consistent API types.
+- Frontend/backend responsibilities stay separate.
+- No API keys in source code — use `.env` (see `.env.example`).
+- Match existing conventions when editing code.
+
+## Language & Design
+
+Use governance/risk/professional services visual language. Avoid: robot graphics, neon colors, "AI magic" language, chatbot aesthetics.
+
+## Before Marking Complete
+
+Verify: end-to-end flow works, scores are mathematically correct, category weights total 100%, N/A handled correctly, recommendations match gaps, reports generate, demo works, tests pass, limitations stated clearly.
