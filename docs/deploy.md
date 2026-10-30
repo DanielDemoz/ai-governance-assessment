@@ -67,14 +67,14 @@ If you prefer Vercel over Render for the API:
 ## Local development
 
 ```bash
-# Terminal 1 — backend
+# Terminal 1: backend
 cd backend
 python -m venv .venv
 .venv\Scripts\activate   # Windows
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 
-# Terminal 2 — frontend
+# Terminal 2: frontend
 cd frontend
 npm install
 npm run dev

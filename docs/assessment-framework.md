@@ -29,15 +29,15 @@ Each question uses a defined maturity scale:
 | Partially implemented | 2 | 0.50 |
 | Planned | 1 | 0.25 |
 | Not implemented | 0 | 0.00 |
-| Not applicable | excluded | — |
+| Not applicable | excluded | n/a |
 
 ## Governance Objectives
 
 Each question maps to:
 
-- **Category** — which dimension it belongs to
-- **Risk level** — low, medium, high, or critical if unaddressed
-- **Governance objective** — what control or practice is being assessed
-- **Recommendation mapping** — which recommendation rule fires on low scores
+- **Category**: which dimension it belongs to
+- **Risk level**: low, medium, high, or critical if unaddressed
+- **Governance objective**: what control or practice is being assessed
+- **Recommendation mapping**: which recommendation rule fires on low scores
 
 Questions will be seeded in Phase 2 based on the specification in the project requirements.

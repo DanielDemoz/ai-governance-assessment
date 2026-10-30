@@ -22,7 +22,7 @@ The AI Governance Readiness Assessment is a full-stack web application with clea
 │  └──────────────┘  └──────────────┘  └──────────────────────┘  │
 │  ┌──────────────────────────────────────────────────────────┐  │
 │  │              Optional LLM Service (Phase 7)               │  │
-│  │         Narratives only — never controls scores           │  │
+│  │         Narratives only, never controls scores           │  │
 │  └──────────────────────────────────────────────────────────┘  │
 └────────────────────────────┬────────────────────────────────────┘
                              │ SQLAlchemy ORM
@@ -35,11 +35,11 @@ The AI Governance Readiness Assessment is a full-stack web application with clea
 
 ## Design Principles
 
-1. **Deterministic scoring** — All numerical scores are calculated by rule-based engines, never by LLMs.
-2. **Explainability** — Every score traces back to individual question responses.
-3. **Separation of concerns** — Frontend displays; backend validates and computes.
-4. **Normalized data model** — No hard-coded results in UI components.
-5. **PostgreSQL-ready** — SQLite for local development; schema designed for PostgreSQL migration.
+1. **Deterministic scoring**: All numerical scores are calculated by rule-based engines, never by LLMs.
+2. **Explainability**: Every score traces back to individual question responses.
+3. **Separation of concerns**: Frontend displays; backend validates and computes.
+4. **Normalized data model**: No hard-coded results in UI components.
+5. **PostgreSQL-ready**: SQLite for local development; schema designed for PostgreSQL migration.
 
 ## Entity Relationships
 

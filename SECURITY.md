@@ -18,11 +18,11 @@ If you discover a security vulnerability, please report it responsibly:
 
 This application handles organizational assessment data. Follow these practices:
 
-- **No secrets in source code** — use environment variables via `.env` (never commit `.env`).
-- **Input validation** — all user input is validated server-side with Pydantic.
-- **Minimal data collection** — do not enter confidential or personal information in demo mode.
-- **LLM isolation** — assessment data is not sent to external LLMs without explicit user action.
-- **Safe file generation** — PDF reports are generated server-side with validated inputs.
+- **No secrets in source code**: use environment variables via `.env` (never commit `.env`).
+- **Input validation**: all user input is validated server-side with Pydantic.
+- **Minimal data collection**: do not enter confidential or personal information in demo mode.
+- **LLM isolation**: assessment data is not sent to external LLMs without explicit user action.
+- **Safe file generation**: PDF reports are generated server-side with validated inputs.
 
 ## Demo Application Notice
 

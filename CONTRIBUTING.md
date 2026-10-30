@@ -9,7 +9,7 @@ This project is built in **phases**. See [docs/development-phases.md](docs/devel
 Before starting work:
 
 1. Read the README and architecture documentation.
-2. Confirm which phase is active — do not implement future-phase features prematurely.
+2. Confirm which phase is active, do not implement future-phase features prematurely.
 3. Inspect existing code before making changes.
 
 ## Setup
@@ -30,7 +30,7 @@ npm install
 
 - **Python**: Type hints, Pydantic models, pytest for tests.
 - **TypeScript**: Strict mode, consistent types shared via API contracts.
-- **Scoring**: Deterministic only — never use an LLM for numerical scores.
+- **Scoring**: Deterministic only, never use an LLM for numerical scores.
 - **Separation**: Keep scoring logic independent from UI and API handlers.
 
 ## Testing

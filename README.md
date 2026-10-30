@@ -6,20 +6,20 @@ A professional web application that helps organizations assess how prepared they
 
 ## Why AI Governance Matters
 
-Organizations deploying AI face growing expectations around accountability, transparency, fairness, and human oversight. Without structured governance, AI systems can create privacy risks, biased outcomes, opaque decisions, and compliance gaps — even when the underlying technology works correctly.
+Organizations deploying AI face growing expectations around accountability, transparency, fairness, and human oversight. Without structured governance, AI systems can create privacy risks, biased outcomes, opaque decisions, and compliance gaps, even when the underlying technology works correctly.
 
 This application evaluates governance maturity across nine dimensions, calculates a transparent readiness score, identifies gaps, and generates prioritized recommendations with an actionable improvement roadmap.
 
 ## Features
 
 - **Nine-dimension governance assessment** across accountability, oversight, privacy, fairness, transparency, security, risk management, lifecycle, and affected people
-- **Deterministic scoring engine** — transparent, reproducible, never LLM-controlled
+- **Deterministic scoring engine**: transparent, reproducible, never LLM-controlled
 - **Separate governance readiness and AI system risk** metrics
 - **Rule-based recommendations** with priority levels and improvement roadmap
 - **5×5 governance risk matrix**
 - **Professional PDF report** generation
 - **Demo assessment** (Northstar College scenario)
-- **Full score explainability** — every result traces to underlying answers
+- **Full score explainability**: every result traces to underlying answers
 
 ## Assessment Framework
 
@@ -183,7 +183,7 @@ The application collects minimal assessment data, provides delete functionality 
 
 ## License
 
-MIT License — see [LICENSE](LICENSE).
+MIT License, see [LICENSE](LICENSE).
 
 ## Contributing
 

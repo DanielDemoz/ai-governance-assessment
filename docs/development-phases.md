@@ -2,7 +2,7 @@
 
 This project is built incrementally. **Do not skip phases or build everything at once.**
 
-## Current Phase: **Phase 5 — Complete**
+## Current Phase: **Phase 5: Complete**
 
 Governance risk matrix, AI system risk profile, and integrated assessment reporting.
 
