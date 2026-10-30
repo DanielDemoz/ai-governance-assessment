@@ -79,7 +79,6 @@ ai-governance-assessment/
 ├── frontend/          # Next.js web application
 ├── docs/              # Architecture, methodology, development phases
 ├── tests/             # Cross-cutting tests
-├── .cursor/rules/     # Cursor development instructions
 ├── .env.example       # Environment variable template
 ├── CONTRIBUTING.md
 └── SECURITY.md
